@@ -115,8 +115,8 @@ void loop() {
     float temp_aver = Temp_Average(temp_dht, temp_ds18); // temerature reading averaging
 
     // ---------- Humisity Loop ----------
-    Get_HumiState(wlevel20State, humid_dht, humid_thres, hfanState);
-    Op_Humi(hfanState);
+    Get_HumiState(wlevel20State, humid_dht, humid_thres);
+    Op_Humi();
     // ---------- Temperature Loop ----------
     Get_TempState(temp_threh, temp_h, temp_l, temp_threl, temp_aver); // checking the temperature state
     Op_Temp(); // turn on heater or cooler or LED
@@ -148,7 +148,7 @@ void Get_Humidity(float & temp_dht, float & humid_dht) {
 }
 
 // ------------------------------------------- humidity state -------------------------------------------------
-void Get_HumiState(int wlevel20State, float humid_dht, float humid_thres, boolean & hfanState) {
+void Get_HumiState(int wlevel20State, float humid_dht, float humid_thres) {
   if (wlevel20State == HIGH) {
     if (humid_dht < humid_thres) {
       hfanState = true;
@@ -162,7 +162,7 @@ void Get_HumiState(int wlevel20State, float humid_dht, float humid_thres, boolea
   }
 }
 // ------------------------------------------- humidity operation -------------------------------------------------
-void Op_Humi(boolean hfanState) {
+void Op_Humi() {
   switch (hfanState)
   {
     case true: digitalWrite(humi_fan, HIGH); break;
@@ -385,4 +385,3 @@ void lcdDisplayTH(float temp_aver, float humid_dht) {
   lcd.setCursor(9, 1);
   lcd.print("H:"); lcd.print(humid_dht);
 }
-
